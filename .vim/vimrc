@@ -1,0 +1,32 @@
+if v:progname == 'vi'
+  set noloadplugins
+endif
+
+let mapleader="\<Space>"
+let maplocalleader="\\"
+
+" loupe 
+let g:LoupeCenterResults=0
+map <Nop><F1> <Plug>(LoupeN)
+nmap <Nop><F2> <Plug>(Loupen)
+
+" tcomment
+let g:tcomment_mapleader1=''
+let g:tcomment_mapleader2=''
+let g:tcomment_mapleader_comment_anyway=''
+let g:tcomment_textobject_inlinecomment=''
+let g:tcomment_mapleader_uncomment_anyway='gu'
+
+if has('packages')
+  packadd! base16-vim
+  packadd! command-t
+  packadd! loupe
+  packadd! pinnacle
+  packadd! tcomment_vim
+else
+  source $HOME/.vim/pack/bundle/opt/vim-pathogen/autoload/pathogen.vim
+  call pathogen#infect('pack/bundle/opt/{}')
+endif
+
+filetype indent plugin on
+syntax on

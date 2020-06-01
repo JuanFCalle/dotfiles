@@ -1,0 +1,19 @@
+# Command aliases
+#
+alias cd..='cd ..'
+alias l='ls -F'
+alias ll='ls -laF'
+alias v=vim
+alias t=tmux
+alias e=exit
+alias h=history
+
+if command -v nvim &> /dev/null; then
+  alias vim=nvim 
+fi
+
+# Global aliases
+#
+alias -g G="|grep"
+alias -g L="|less"
+alias -g W="|wc -l"

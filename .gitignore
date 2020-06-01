@@ -1,0 +1,9 @@
+*.bak
+*.temp
+*~
+.DS_Store
+\#*\#
+/.vim/.base16
+/.vim/tmp/shada
+/.vim/tmp/viminfo
+/.vim/.netrwhist
