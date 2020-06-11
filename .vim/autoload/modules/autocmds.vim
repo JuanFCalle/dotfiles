@@ -89,3 +89,11 @@ function! s:get_custom_statusline(action) abort
 
   return 1 " Use default.
 endfunction
+
+function! modules#autocmds#idleboot() abort
+  augroup IntelloIdleboot
+    autocmd!
+  augroup END
+  doautocmd User IntelloDefer
+  autocmd! User IntelloDefer
+endfunction

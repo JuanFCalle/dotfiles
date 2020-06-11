@@ -17,9 +17,18 @@ let g:tcomment_mapleader_comment_anyway=''
 let g:tcomment_textobject_inlinecomment=''
 let g:tcomment_mapleader_uncomment_anyway='gu'
 
+" python3 provider avoid search
+if filereadable('/usr/local/bin/python3')
+  let g:python3_host_prog='/usr/local/bin/python3'
+endif
+
 if has('packages')
+  if has('nvim')
+    packadd! nvim-lsp
+  endif
   packadd! base16-vim
   packadd! command-t
+  packadd! deoplete-lsp
   packadd! loupe
   packadd! pinnacle
   packadd! tcomment_vim

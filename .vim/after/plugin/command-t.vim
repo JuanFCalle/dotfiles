@@ -17,11 +17,7 @@ let g:CommandTScanDotDirectories=1
 let g:CommandTTraverseSCM='pwd'
 let g:CommandTWildIgnore=&wildignore
 let g:CommandTWildIgnore.=',*/.git/*'
-let g:CommandTWildIgnore.=',*/.hg/*'
-let g:CommandTWildIgnore.=',*/bower_components/*'
 let g:CommandTWildIgnore.=',*/tmp/*'
-let g:CommandTWildIgnore.=',*.class'
-let g:CommandTWildIgnore.=',*/classs/*'
 let g:CommandTWildIgnore.=',*/build/*'
 
 

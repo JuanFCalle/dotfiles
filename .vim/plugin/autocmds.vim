@@ -7,7 +7,7 @@ if has('autocmd')
       " Make current window more obvious by turning off/adjusting some features in non-current windows
       if exists('+winhighlight')
         autocmd BufEnter,FocusGained,VimEnter,WinEnter * set winhighlight=
-        autocmd FocusLost,WinLeave * set winhighlight=CursorLineNr:LineNr,EndOfBuffer:ColorColumn,IncSearc:ColorColumn,Normal:ColorColumn,NormalNC:ColorColumn,SignColumn:ColorColumn
+        autocmd FocusLost,WinLeave * set winhighlight=CursorLineNr:LineNr,EndOfBuffer:ColorColumn,IncSearch:ColorColumn,Normal:ColorColumn,NormalNC:ColorColumn,SignColumn:ColorColumn
       endif
       if has('statusline')
         autocmd BufEnter,FocusGained,VimEnter,WinEnter * call modules#autocmds#focus_statusline()

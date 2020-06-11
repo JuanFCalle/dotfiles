@@ -88,6 +88,13 @@ set scrolloff=3                       " start scrolling 3 lines before edge of v
 set noshiftround                      " don't always indent by multiple of shiftwidth
 set shiftwidth=2                      " spaces per tab (when shifting)
 set shortmess+=I                      " no splash screen
+if has('patch-7.4.314')
+  set shortmess+=c
+endif
+
+if has('showcmd')
+  set noshowcmd
+endif
 
 set sidescroll=0                      " sidescroll in jumps because terminals are slow
 set sidescrolloff=3                   " same as scrolloff, but for columns
@@ -175,3 +182,4 @@ if has('wildmenu')
   set wildmenu                        " show options as list when switching buffers etc
 endif
 set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
+set completeopt-=preview              " Remove 'preview' window whem completion popup is shown

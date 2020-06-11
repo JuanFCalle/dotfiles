@@ -25,3 +25,12 @@
 [submodule "vim-pathogen"]
 	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
+[submodule "deoplete"]
+	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/deoplete
+	url = https://github.com/Shougo/deoplete.nvim.git
+[submodule "nvim-lsp"]
+	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/nvim-lsp
+	url = https://github.com/neovim/nvim-lsp.git
+[submodule "deoplete-lsp"]
+	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/deoplete-lsp
+	url = https://github.com/Shougo/deoplete-lsp.git
