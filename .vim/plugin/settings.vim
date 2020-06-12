@@ -19,6 +19,11 @@ if exists('&belloff')
   set belloff=all                     " never ring the bell for any reason
 endif
 
+if exists('+colorcolumn')
+  let &l:colorcolumn='+' . join(range(0, 254), ',+')
+endif
+
+set textwidth=100
 set nowrap
 set cursorline
 set diffopt+=foldcolumn:0             " don't show fold column in diff view

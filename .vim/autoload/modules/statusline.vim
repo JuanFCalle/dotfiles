@@ -3,21 +3,7 @@ scriptencoding utf-8
 function! modules#statusline#gutterpadding() abort
   let l:signcolumn=0
   if exists('+signcolumn')
-    if &signcolumn == 'yes'
-      let l:signcolumn=2
-    elseif &signcolumn == 'auto'
-      if exists('*execute')
-        let l:signs=execute('sign place buffer=' .bufnr('$'))
-      else
-        let l:signs=''
-        silent! redir => l:signs
-        silent execute 'sign place buffer=' . bufnr('$')
-        redir END
-      end
-      if match(l:signs, 'line=') != -1
-        let l:signcolumn=2
-      endif
-    endif
+    let l:signcolumn=2
   endif
 
   let l:minwidth=2
@@ -116,6 +102,10 @@ function! modules#statusline#update_highlight() abort
   if !modules#pinnacle#active()
     return
   endif
+
+" Update StatusLine to use italics (used for filetype).
+  let l:highlight=pinnacle#italicize('StatusLine')
+  execute 'highlight User1 ' . l:highlight
 
   " Update MatchParen to use italics (used for blurred statuslines).
   let l:highlight=pinnacle#italicize('MatchParen')

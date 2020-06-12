@@ -1,4 +1,38 @@
-let g:IntelloMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
+let g:IntelloColorColumnBufferNameBlacklist = []
+let g:IntelloColorColumnFileTypeBlacklist = ['command-t', 'diff', 'qf']
+let g:IntelloMkviewFiletypeBlacklist = ['diff', 'gitcommit']
+
+function! modules#autocmds#should_colorcolumn() abort
+  if index(g:IntelloColorColumnBufferNameBlacklist, bufname(bufnr('%'))) != -1
+    return 0
+  endif
+  if index(g:IntelloColorColumnFileTypeBlacklist, &filetype) != -1
+    return 0
+  endif
+  return &buflisted
+endfunction
+
+function! modules#autocmds#blur_window() abort
+  if modules#autocmds#should_colorcolumn()
+    ownsyntax off
+    set nolist
+    if has('conceal')
+      set conceallevel=0
+    endif
+  endif
+endfunction
+
+function! modules#autocmds#focus_window() abort
+  if modules#autocmds#should_colorcolumn()
+    if !empty(&ft)
+      ownsyntax on
+      set list
+      if has('conceal')
+        set conceallevel=1
+      endif
+    endif
+  endif
+endfunction
 
 function! modules#autocmds#should_mkview() abort
   return
@@ -49,12 +83,6 @@ function! s:update_statusline(default, action) abort
     " Apply custom statusline.
     execute 'setlocal statusline=' . l:statusline
   elseif l:statusline == 0
-    " Do nothing.
-    "
-    " Note that order matters here because of Vimscript's insane coercion rules:
-    " when comparing a string to a number, the string gets coerced to 0, which
-    " means that all strings `== 0`. So, we must check for string-ness first,
-    " above.
     return
   else
     execute 'setlocal statusline=' . a:default
@@ -63,12 +91,7 @@ endfunction
 
 function! s:get_custom_statusline(action) abort
   if &ft ==# 'command-t'
-    " Will use Command-T-provided buffer name, but need to escape spaces.
     return '\ \ ' . substitute(bufname('%'), ' ', '\\ ', 'g')
-  elseif &ft ==# 'diff' && exists('t:diffpanel') && t:diffpanel.bufname ==# bufname('%')
-    return 'Undotree\ preview' " Less ugly, and nothing really useful to show.
-  elseif &ft ==# 'undotree'
-    return 0 " Don't override; undotree does its own thing.
   elseif &ft ==# 'qf'
     if a:action ==# 'blur'
       return
