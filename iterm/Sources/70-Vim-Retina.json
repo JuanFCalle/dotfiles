@@ -1,0 +1,10 @@
+{
+    "Profiles": [
+        {
+            "Name": "Vim",
+            "Guid": "",
+            "Dynamic Profile Parent Name": "Vim (Base)",
+            "Normal Font": "SourceCodePro-Light 13"
+        }
+    ]
+}

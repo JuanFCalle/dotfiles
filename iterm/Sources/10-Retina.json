@@ -1,0 +1,11 @@
+{
+    "Profiles": [
+        {
+            "Name": "Terminal",
+            "Guid": "",
+            "Dynamic Profile Parent Name": "Base",
+            "Normal Font": "SourceCodePro-Light 13"
+        }
+    ]
+}
+

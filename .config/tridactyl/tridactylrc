@@ -180,7 +180,7 @@ set allowautofocus false
 set searchengine duckduckgo
 set tabopencontaineraware true
 set wordpattern [^\s\/]+
-set hintchars asdfghjkl
+set hintchars arstdhneio
 set hintuppercase false
 set smoothscroll true
 set newtab about:blank
@@ -198,3 +198,10 @@ set searchurls.pydoc https://docs.python.org/3/search.html?q=%s
 " Native messenger stuff
 guiset_quiet gui none
 setpref accessibility.typeaheadfind.autostart false
+setpref accessibility.typeaheadfind.flashBar 0
+setpref signon.autofillForms true
+setpref signon.rememberSignons true
+setpref extensions.formautofill.addresses.enabled true
+setpref extensions.formautofill.available "on"
+setpref extensions.formautofill.creditCards.enabled true
+setpref extensions.formautofill.heuristics.enabled true

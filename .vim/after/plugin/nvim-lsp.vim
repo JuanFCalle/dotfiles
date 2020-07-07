@@ -57,7 +57,7 @@ if has('autocmd')
   augroup IntelloLanguageClientAutocmds
     autocmd!
     autocmd WinEnter * call s:Bind()
-    autocmd FileType python,vim call s:ConfigureBuffer()
+    autocmd FileType javascript,python,vim call s:ConfigureBuffer()
     autocmd ColorScheme * call s:SetUpLspHighlights()
   augroup END
 endif
