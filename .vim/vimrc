@@ -32,6 +32,7 @@ if has('packages')
   packadd! loupe
   packadd! pinnacle
   packadd! tcomment_vim
+  packadd! vim-json
 else
   source $HOME/.vim/pack/bundle/opt/vim-pathogen/autoload/pathogen.vim
   call pathogen#infect('pack/bundle/opt/{}')

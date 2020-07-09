@@ -34,3 +34,6 @@
 [submodule "deoplete-lsp"]
 	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/deoplete-lsp
 	url = https://github.com/Shougo/deoplete-lsp.git
+[submodule "vim-json"]
+	path = /Users/juan/code/dotfiles/.vim/pack/bundle/opt/vim-json
+	url = https://github.com/elzr/vim-json.git

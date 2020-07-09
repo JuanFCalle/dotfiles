@@ -9,7 +9,7 @@
             "complex_modifications": {
                 "parameters": {
                     "basic.simultaneous_threshold_milliseconds": 50,
-                    "basic.to_delayed_action_delay_milliseconds": 1000,
+                    "basic.to_delayed_action_delay_milliseconds": 500,
                     "basic.to_if_alone_timeout_milliseconds": 1000,
                     "basic.to_if_held_down_threshold_milliseconds": 500,
                     "mouse_motion_to_scroll.speed": 100
@@ -43,65 +43,128 @@
                         ]
                     },
                     {
-                        "description": "Change Fn1(201) to return_or_enter",
-                        "manipulators": [
-                          {
-                            "from": {
-                              "key_code": 201,
-                              "modifiers": {
-                                "optional": [
-                                  "any"
-                                ]
-                              }
-                            },
-                            "to": [
-                              {
-                                "key_code": "return_or_enter"
-                              }
-                            ],
-                            "conditions": [
-                              {
-                                "type": "device_if",
-                                "identifiers": [
-                                  {
-                                    "is_keyboard": true,
-                                    "is_pointing_device": false,
-                                    "product_id": 373,
-                                    "vendor_id": 1241
-                                  }
-                                ]
-                              }
-                            ],
-                            "type": "basic"
-                          }
-                        ]
-                    },
-                    {
-                        "description": "Left and Right Shift together toggle Caps Lock",
+                        "description": "Change right_shift to slash when used alone",
                         "manipulators": [
                             {
                                 "from": {
+                                    "key_code": "right_shift",
                                     "modifiers": {
                                         "optional": [
                                             "any"
                                         ]
-                                    },
-                                    "simultaneous": [
-                                        {
-                                            "key_code": "left_shift"
-                                        },
-                                        {
-                                            "key_code": "right_shift"
-                                        }
-                                    ],
-                                    "simultaneous_options": {
-                                        "key_down_order": "insensitive",
-                                        "key_up_order": "insensitive"
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "caps_lock"
+                                        "key_code": "right_shift",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "slash"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change right_control to right arrow when used alone",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "right_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change right_option to up_arrow when used alone",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "right_option",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_option",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "up_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change command to down_arrow when used alone",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "application",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_command",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "down_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change pn(207) to left_arrow when used alone",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": 207,
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow"
                                     }
                                 ],
                                 "type": "basic"
@@ -112,9 +175,44 @@
                         "description": "Dead key layer",
                         "manipulators": [
                             {
+                                "from": {
+                                    "key_code": "scroll_lock",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "active",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "active",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "set_variable": {
+                                            "name": "oneshot",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -136,7 +234,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -146,7 +244,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -168,7 +266,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -178,7 +276,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -200,7 +298,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -210,7 +308,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -232,7 +330,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -242,7 +340,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -264,7 +362,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -274,7 +372,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -296,7 +394,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -306,7 +404,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -328,7 +426,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -338,7 +436,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -360,7 +458,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -370,7 +468,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -392,7 +490,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -402,7 +500,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -424,7 +522,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -434,7 +532,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -453,7 +551,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -463,7 +561,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -485,7 +583,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -495,7 +593,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -514,7 +612,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -524,7 +622,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -543,7 +641,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -553,7 +651,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -575,7 +673,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -585,7 +683,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -604,7 +702,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -614,7 +712,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -633,7 +731,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -643,7 +741,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -665,7 +763,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -675,7 +773,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -697,7 +795,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -707,7 +805,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -726,7 +824,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -736,7 +834,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -755,7 +853,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -765,7 +863,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -784,7 +882,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -794,7 +892,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -813,7 +911,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -823,7 +921,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -842,7 +940,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -852,7 +950,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -874,7 +972,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -884,7 +982,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -903,7 +1001,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -913,7 +1011,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -932,7 +1030,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -942,7 +1040,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -961,7 +1059,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -971,7 +1069,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -990,7 +1088,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -1000,13 +1098,13 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_oneshot",
+                                        "name": "oneshot",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
                                 "from": {
-                                    "key_code": "right_shift",
+                                    "key_code": "slash",
                                     "modifiers": {
                                         "optional": [
                                             "any"
@@ -1019,7 +1117,7 @@
                                     },
                                     {
                                         "set_variable": {
-                                            "name": "dead_oneshot",
+                                            "name": "oneshot",
                                             "value": 0
                                         }
                                     }
@@ -1029,7 +1127,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1055,7 +1153,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1081,7 +1179,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1107,7 +1205,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1133,7 +1231,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1159,7 +1257,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1185,7 +1283,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1211,7 +1309,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1237,7 +1335,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1263,7 +1361,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1289,7 +1387,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1312,7 +1410,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1338,7 +1436,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1361,7 +1459,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1384,7 +1482,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1410,7 +1508,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1433,7 +1531,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1456,7 +1554,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1482,7 +1580,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1508,7 +1606,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1531,7 +1629,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1554,7 +1652,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1577,7 +1675,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1600,7 +1698,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1623,7 +1721,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1649,7 +1747,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1672,7 +1770,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1695,7 +1793,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1718,7 +1816,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
@@ -1741,13 +1839,13 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "dead_active",
+                                        "name": "active",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
                                 "from": {
-                                    "key_code": "right_shift",
+                                    "key_code": "slash",
                                     "modifiers": {
                                         "optional": [
                                             "any"
@@ -1760,265 +1858,10 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },
-                            {
-                              "from": {
-                                "key_code": "scroll_lock",
-                                "modifiers": {
-                                  "optional": [
-                                    "any"
-                                  ]
-                                }
-                              },
-                              "to": [
-                                {
-                                  "set_variable": {
-                                    "name": "dead_active",
-                                    "value": 1
-                                  }
-                                }
-                              ],
-                              "to_after_key_up": [
-                                {
-                                  "set_variable": {
-                                    "name": "dead_active",
-                                    "value": 0
-                                  }
-                                }
-                              ],
-                              "to_delayed_action": {
-                                "to_if_canceled": [
-                                  {
-                                    "set_variable": {
-                                      "name": "dead_oneshot",
-                                      "value": 0
-                                    }
-                                  }
-                                ],
-                                "to_if_invoked": [
-                                  {
-                                    "set_variable": {
-                                      "name": "dead_oneshot",
-                                      "value": 0
-                                    }
-                                  }
-                                ]
-                              },
-                              "to_if_alone": [
-                                {
-                                  "set_variable": {
-                                    "name": "dead_oneshot",
-                                    "value": 1
-                                  }
-                                }
-                              ],
-                              "conditions": [
-                                {
-                                  "type": "device_if",
-                                  "identifiers": [
-                                    {
-                                      "is_keyboard": true,
-                                      "is_pointing_device": false,
-                                      "product_id": 373,
-                                      "vendor_id": 1241
-                                    }
-                                  ]
-                                }
-                              ],
-                              "type": "basic"
                             }
                         ]
                     }
                 ]
-            },
-            "devices": [
-                {
-                    "disable_built_in_keyboard_if_exists": false,
-                    "fn_function_keys": [],
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": false,
-                        "product_id": 610,
-                        "vendor_id": 1452
-                    },
-                    "ignore": false,
-                    "manipulate_caps_lock_led": true,
-                    "simple_modifications": []
-                },
-                {
-                    "disable_built_in_keyboard_if_exists": false,
-                    "fn_function_keys": [],
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": false,
-                        "product_id": 373,
-                        "vendor_id": 1241
-                    },
-                    "ignore": false,
-                    "manipulate_caps_lock_led": false,
-                    "simple_modifications": [
-                        {
-                            "from": {
-                                "key_code": "delete_forward"
-                            },
-                            "to": {
-                                "key_code": "open_bracket"
-                            }
-                        },
-                        {
-                            "from": {
-                                "key_code": "delete_or_backspace"
-                            },
-                            "to": {
-                                "key_code": "close_bracket"
-                            }
-                        },
-                        {
-                            "from": {
-                                "key_code": "escape"
-                            },
-                            "to": {
-                                "key_code": "tab"
-                            }
-                        },
-                        {
-                            "from": {
-                                "key_code": "return_or_enter"
-                            },
-                            "to": {
-                                "key_code": "quote"
-                            }
-                        },
-                        {
-                            "from": {
-                                "key_code": "tab"
-                            },
-                            "to": {
-                                "key_code": "delete_or_backspace"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "fn_function_keys": [
-                {
-                    "from": {
-                        "key_code": "f1"
-                    },
-                    "to": {
-                        "consumer_key_code": "display_brightness_decrement"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f2"
-                    },
-                    "to": {
-                        "consumer_key_code": "display_brightness_increment"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f3"
-                    },
-                    "to": {
-                        "key_code": "mission_control"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f4"
-                    },
-                    "to": {
-                        "key_code": "launchpad"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f5"
-                    },
-                    "to": {
-                        "key_code": "illumination_decrement"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f6"
-                    },
-                    "to": {
-                        "key_code": "illumination_increment"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f7"
-                    },
-                    "to": {
-                        "consumer_key_code": "rewind"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f8"
-                    },
-                    "to": {
-                        "consumer_key_code": "play_or_pause"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f9"
-                    },
-                    "to": {
-                        "consumer_key_code": "fast_forward"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f10"
-                    },
-                    "to": {
-                        "consumer_key_code": "mute"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f11"
-                    },
-                    "to": {
-                        "consumer_key_code": "volume_decrement"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "f12"
-                    },
-                    "to": {
-                        "consumer_key_code": "volume_increment"
-                    }
-                }
-            ],
-            "name": "Default",
-            "parameters": {
-                "delay_milliseconds_before_open_device": 1000
-            },
-            "selected": true,
-            "simple_modifications": [],
-            "virtual_hid_keyboard": {
-                "country_code": 0,
-                "mouse_key_xy_scale": 100
-            }
-        },
-        {
-            "complex_modifications": {
-                "parameters": {
-                    "basic.simultaneous_threshold_milliseconds": 50,
-                    "basic.to_delayed_action_delay_milliseconds": 500,
-                    "basic.to_if_alone_timeout_milliseconds": 1000,
-                    "basic.to_if_held_down_threshold_milliseconds": 500,
-                    "mouse_motion_to_scroll.speed": 100
-                },
-                "rules": []
             },
             "devices": [],
             "fn_function_keys": [
@@ -2119,12 +1962,29 @@
                     }
                 }
             ],
-            "name": "Vanilla",
+            "name": "Vortex core profile",
             "parameters": {
                 "delay_milliseconds_before_open_device": 1000
             },
-            "selected": false,
-            "simple_modifications": [],
+            "selected": true,
+            "simple_modifications": [
+                {
+                    "from": {
+                        "key_code": "return_or_enter"
+                    },
+                    "to": {
+                        "key_code": "slash"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "slash"
+                    },
+                    "to": {
+                        "key_code": "return_or_enter"
+                    }
+                }
+            ],
             "virtual_hid_keyboard": {
                 "country_code": 0,
                 "mouse_key_xy_scale": 100
