@@ -1,0 +1,55 @@
+set number
+set relativenumber
+set scrolloff=3
+set clipboard+=unnamed
+
+set incsearch
+set ignorecase
+set smartcase
+
+set surround
+set NERDTree
+
+let mapleader = " "
+
+" Copy until end of line
+nnoremap Y y$
+" New line above
+nnoremap <S-Enter> O<Esc>
+" New line below
+nnoremap <CR> o<Esc>
+" New line below insert mode
+inoremap <C-j> <Esc>o
+" Back
+nnoremap <C-o> :action Back<CR>
+" Forward
+nnoremap <C-i> :action Forward<CR>
+" Go to last buffer
+nnoremap <leader><leader> :action JumpToLastChange<CR>
+" Quick documentation
+nnoremap K :action QuickJavaDoc<CR>
+
+" Rename
+nmap <leader>/r :action RenameElement<CR>
+" Usages all
+nmap <leader>* :action FindUsages<CR>
+" Move to window left
+nmap <leader>wh <C-w><C-h>
+" Move to window below
+nmap <leader>wj <C-w><C-j>
+" Move to window above
+nmap <leader>wk <C-w><C-k>
+" Move to window right
+nmap <leader>wl <C-w><C-l>
+" Move to opposite group
+nmap <leader>wx :action MoveEditorToOppositeTabGroup<CR>
+" Close split
+nmap <leader>wq :action Unsplit<CR>
+" Move line down
+nmap <leader>lj :action MoveLineDown<CR>
+" Move line up
+nmap <leader>lk :action MoveLineUp<CR>
+" Move statement down
+nmap <leader>sj :action MoveStatementDown<CR>
+" Move statement up
+nmap <leader>sk :action MoveStatementUp<CR>
