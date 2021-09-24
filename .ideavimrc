@@ -41,6 +41,10 @@ nmap <leader>wj <C-w><C-j>
 nmap <leader>wk <C-w><C-k>
 " Move to window right
 nmap <leader>wl <C-w><C-l>
+" Split window vertically
+nmap <leader>wv :action SplitVertically<CR>
+" Split window horizontally
+nmap <leader>ws :action SplitHorizontally<CR>
 " Move to opposite group
 nmap <leader>wx :action MoveEditorToOppositeTabGroup<CR>
 " Close split
