@@ -57,3 +57,4 @@ nmap <leader>lk :action MoveLineUp<CR>
 nmap <leader>sj :action MoveStatementDown<CR>
 " Move statement up
 nmap <leader>sk :action MoveStatementUp<CR>
+
