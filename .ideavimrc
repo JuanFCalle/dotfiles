@@ -2,6 +2,7 @@ set number
 set relativenumber
 set scrolloff=3
 set clipboard+=unnamed
+set idearefactormode=keep
 
 set incsearch
 set ignorecase
@@ -20,14 +21,20 @@ nnoremap <S-Enter> O<Esc>
 nnoremap <CR> o<Esc>
 " New line below insert mode
 inoremap <C-j> <Esc>o
-" Back
-nnoremap <C-o> :action Back<CR>
-" Forward
-nnoremap <C-i> :action Forward<CR>
 " Go to last buffer
 nnoremap <leader><leader> :action JumpToLastChange<CR>
 " Quick documentation
 nnoremap K :action QuickJavaDoc<CR>
+" StretchSplitToLeft
+nmap <C-A-S-h> :action StretchSplitToLeft<CR>
+" StretchSplitToRight
+nmap <C-A-S-l> :action StretchSplitToRight<CR>
+" StretchSplitToBottom
+nmap <C-A-S-k> :action StretchSplitToBottom<CR>
+" StretchSplitToTop
+nmap <C-A-S-j> :action StretchSplitToTop<CR>
+" Unfold to level
+nnoremap zr :action ExpandToLevel<CR>
 
 " Rename
 nmap <leader>/r :action RenameElement<CR>
@@ -57,4 +64,3 @@ nmap <leader>lk :action MoveLineUp<CR>
 nmap <leader>sj :action MoveStatementDown<CR>
 " Move statement up
 nmap <leader>sk :action MoveStatementUp<CR>
-
