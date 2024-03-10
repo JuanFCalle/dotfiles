@@ -37,3 +37,9 @@
 [submodule "vim-json"]
 	path = /Users/juancalle/code/dotfiles/.vim/pack/bundle/opt/vim-json
 	url = https://github.com/elzr/vim-json.git
+[submodule "/Users/juancalle/code/dotfiles/.zsh/zsh-autosuggestions"]
+	path = /Users/juancalle/code/dotfiles/.zsh/zsh-autosuggestions
+	url = git@github.com:zsh-users/zsh-autosuggestions.git
+[submodule "/Users/juancalle/code/dotfiles/.zsh/base16-shell"]
+	path = /Users/juancalle/code/dotfiles/.zsh/base16-shell
+	url = git@github.com:chriskempson/base16-shell.git
