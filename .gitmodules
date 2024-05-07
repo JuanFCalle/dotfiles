@@ -1,39 +1,40 @@
 [submodule "base16-iterm2"]
-	path = /Users/u793278/code/dotfiles/vendor/base16-iterm2
+	path = /Users/U793278/code/dotfiles/vendor/base16-iterm2
 	url = https://github.com/chriskempson/base16-iterm2.git
 [submodule "base16-shell"]
-	path = /Users/u793278/code/dotfiles/.zsh/base16-shell
+	path = /Users/U793278/code/dotfiles/.zsh/base16-shell
 	url = https://github.com/chriskempson/base16-shell.git
 [submodule "zsh-autosuggestions"]
-	path = /Users/u793278/code/dotfiles/.zsh/zsh-autosuggestions
+	path = /Users/U793278/code/dotfiles/.zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "command-t"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/command-t
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/command-t
 	url = https://github.com/wincent/command-t.git
 [submodule "base16-vim"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/base16-vim
-	url = https://github.com/chriskempson/base16-vim.git
+        branch = main
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/base16-vim
+	url = https://github.com/wincent/base16-nvim.git
 [submodule "loupe"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/loupe
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/loupe
 	url = https://github.com/wincent/loupe.git
 [submodule "pinnacle"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/pinnacle
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/pinnacle
 	url = https://github.com/wincent/pinnacle.git
 [submodule "tcomment_vim"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/tcomment_vim
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/tcomment_vim
 	url = https://github.com/tomtom/tcomment_vim.git
 [submodule "vim-pathogen"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/vim-pathogen
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
 [submodule "deoplete"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/deoplete
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/deoplete
 	url = https://github.com/Shougo/deoplete.nvim.git
 [submodule "nvim-lsp"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/nvim-lsp
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/nvim-lsp
 	url = https://github.com/neovim/nvim-lsp.git
 [submodule "deoplete-lsp"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/deoplete-lsp
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/deoplete-lsp
 	url = https://github.com/Shougo/deoplete-lsp.git
 [submodule "vim-json"]
-	path = /Users/u793278/code/dotfiles/.vim/pack/bundle/opt/vim-json
+	path = /Users/U793278/code/dotfiles/.vim/pack/bundle/opt/vim-json
 	url = https://github.com/elzr/vim-json.git
