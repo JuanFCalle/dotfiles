@@ -218,7 +218,7 @@ source $HOME/.zsh/path
 
 # START PLUGINS
 #
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-autosuggestions/suggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 #
 # END PLUGINS

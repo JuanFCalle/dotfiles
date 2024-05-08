@@ -38,7 +38,7 @@ color() {
   emulate -L zsh
 
   local SCHEME="$1"
-  local BASE16_DIR=~/.zsh/base16-shell/scripts
+  local BASE16_DIR=~/.zsh/base16-shell/base16-shell/scripts
   local STATUS=0
 
   __color() {
