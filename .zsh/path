@@ -1,3 +1,7 @@
 PATH=$PATH:/usr/local/bin
 PATH=$PATH:/usr/local/sbin
+PATH=$PATH:/opt/homebrew/opt/arm-none-eabi-gcc@8/bin
+PATH=$PATH:/opt/homebrew/opt/avr-gcc@8/bin
+PATH=$PATH:/Users/U793278/.rbenv/bin
+PATH=$PATH:/Users/U793278/Library/Android/sdk/platform-tools
 export PATH

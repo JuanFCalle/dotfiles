@@ -10,36 +10,37 @@ set smartcase
 
 set surround
 set NERDTree
+set ideajoin
 
-let mapleader = " "
+let mapleader=" "
 
 " Copy until end of line
 nnoremap Y y$
 " New line above
 nnoremap <S-Enter> O<Esc>
 " New line below
-nnoremap <CR> o<Esc>
+nnoremap <LF> o<Esc>
 " New line below insert mode
 inoremap <C-j> <Esc>o
 " Go to last buffer
-nnoremap <leader><leader> :action JumpToLastChange<CR>
+map <leader><leader> <Action>(JumpToLastChange)
 " Quick documentation
-nnoremap K :action QuickJavaDoc<CR>
+map <S-k> <Action>(QuickJavaDoc)
 " StretchSplitToLeft
-nmap <C-A-S-h> :action StretchSplitToLeft<CR>
+map <C-A-S-h> <Action>(StretchSplitToLeft)
 " StretchSplitToRight
-nmap <C-A-S-l> :action StretchSplitToRight<CR>
+map <C-A-S-l> <Action>(StretchSplitToRight)
 " StretchSplitToBottom
-nmap <C-A-S-k> :action StretchSplitToBottom<CR>
+map <C-A-S-k> <Action>(StretchSplitToBottom)
 " StretchSplitToTop
-nmap <C-A-S-j> :action StretchSplitToTop<CR>
+map <C-A-S-j> <Action>(StretchSplitToTop)
 " Unfold to level
-nnoremap zr :action ExpandToLevel<CR>
+map zr <Action>(ExpandToLevel)
 
 " Rename
-nmap <leader>/r :action RenameElement<CR>
+nmap <leader>/r <Action>(RenameElement)
 " Usages all
-nmap <leader>* :action FindUsages<CR>
+nmap <leader>* <Action>(FindUsages)
 " Move to window left
 nmap <leader>wh <C-w><C-h>
 " Move to window below
@@ -49,18 +50,18 @@ nmap <leader>wk <C-w><C-k>
 " Move to window right
 nmap <leader>wl <C-w><C-l>
 " Split window vertically
-nmap <leader>wv :action SplitVertically<CR>
+nmap <leader>wv <Action>(SplitVertically)
 " Split window horizontally
-nmap <leader>ws :action SplitHorizontally<CR>
+nmap <leader>ws <Action>(SplitHorizontally)
 " Move to opposite group
-nmap <leader>wx :action MoveEditorToOppositeTabGroup<CR>
+nmap <leader>wx <Action>(MoveEditorToOppositeTabGroup)
 " Close split
-nmap <leader>wq :action Unsplit<CR>
+nmap <leader>wq <Action>(Unsplit)
 " Move line down
-nmap <leader>lj :action MoveLineDown<CR>
+nmap <leader>lj <Action>(MoveLineDown)
 " Move line up
-nmap <leader>lk :action MoveLineUp<CR>
+nmap <leader>lk <Action>(MoveLineUp)
 " Move statement down
-nmap <leader>sj :action MoveStatementDown<CR>
+nmap <leader>sj <Action>(MoveStatementDown)
 " Move statement up
-nmap <leader>sk :action MoveStatementUp<CR>
+nmap <leader>sk <Action>(MoveStatementUp)

@@ -1,0 +1,16 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  s
+)
+
+(defalias
+  s-mod (tap-hold 200 200 r lctl)
+)
+
+(deflayer base
+  @s-mod
+)
+
