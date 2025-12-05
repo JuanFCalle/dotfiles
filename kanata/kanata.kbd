@@ -3,14 +3,62 @@
 )
 
 (defsrc
-  s
+  tab            q    w    e    r    t       y    u    i    o    p       [
+  caps           a    s    d    f    g       h    j    k    l    ;       '    \ 
+  lsft   `       z    x    c    v    b       n    m    ,    .    /       rsft
+                     lalt lmet          spc            rmet ralt
+)
+
+(defvar
+  tap-time 200
+  hold-time 200
 )
 
 (defalias
-  s-mod (tap-hold 200 200 r lctl)
+  l_lower (layer-toggle lower)
+  l_raise (layer-toggle raise)
+
+  r-mod (tap-hold $tap-time $hold-time r lctl)
+  s-mod (tap-hold $tap-time $hold-time s lalt)
+  t-mod (tap-hold $tap-time $hold-time t lmet)
+  n-mod (tap-hold $tap-time $hold-time n rmet)
+  e-mod (tap-hold $tap-time $hold-time e ralt)
+  i-mod (tap-hold $tap-time $hold-time i rctl)
+
+  r-low-mod (tap-hold $tap-time $hold-time S-9 lctl)
+  s-low-mod (tap-hold $tap-time $hold-time = lalt)
+  t-low-mod (tap-hold $tap-time $hold-time 0 lmet)
+  n-low-mod (tap-hold $tap-time $hold-time 1 rmet)
+  e-low-mod (tap-hold $tap-time $hold-time S-8 ralt)
+  i-low-mod (tap-hold $tap-time $hold-time S-0 rctl)
+
+  t-raise-mod (tap-hold $tap-time $hold-time f10 lmet)
+  n-raise-mod (tap-hold $tap-time $hold-time f1 rmet)
+
+  lft-mod (tap-hold $tap-time $hold-time left @l_raise)
+  dwn-mod (tap-hold $tap-time $hold-time down @l_lower)
+  spc-mod (tap-hold $tap-time $hold-time spc lsft)
+  up-mod (tap-hold $tap-time $hold-time up @l_lower)
+  rgh-mod (tap-hold $tap-time $hold-time rght @l_raise)
 )
 
 (deflayer base
-  @s-mod
+  XX       q   w        f        p         g     j    l        u       y        ;    XX    
+  bspc     a   @r-mod   @s-mod   @t-mod    d     h    @n-mod   @e-mod  @i-mod   o    ret    ret    
+  tab tab  z   x        c        v         b     k    m        ,       .        /    esc
+  		  @lft-mod    @dwn-mod    @spc-mod    @up-mod    @rgh-mod 
 )
 
+(deflayer lower
+  `      S-5  S-7    	   S-'          S-=           S-2     S-4    S--          [           ]            S-1    \    
+  S-`    '    @r-low-mod   @s-low-mod   @t-low-mod    S-[     S-]    @n-low-mod   @e-low-mod  @i-low-mod   -      S-\    _ 
+  _  _   6    7            8            9             S-6     S-3    2            3           4            5      _
+  		                   		left   _   _   _   rght 
+)
+
+(deflayer raise
+  XX   XX    XX     XX     XX             XX    XX   XX        	    XX     XX     XX    XX    
+  XX   f12   lctl   lalt   @t-raise-mod   XX    XX   @n-raise-mod   ralt   rctl   f11   _    _
+  _ _  f6    f7     f8     f9             XX    XX   f2             f3     f4     f5    _
+  		                 _   down   lsft   up   _ 
+)

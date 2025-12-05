@@ -1,16 +1,20 @@
-set number
-set relativenumber
-set scrolloff=3
 set clipboard+=unnamed
 set idearefactormode=keep
+set scrolloff=3
 
-set incsearch
+set gdefault
+set guicursor
 set ignorecase
+set incsearch
+set number
+set relativenumber
 set smartcase
+set visualbell
+set wrapscan
 
-set surround
 set NERDTree
 set ideajoin
+set surround
 
 let mapleader=" "
 
@@ -18,50 +22,94 @@ let mapleader=" "
 nnoremap Y y$
 " New line above
 nnoremap <S-Enter> O<Esc>
-" New line below
-nnoremap <LF> o<Esc>
+
+" Move to window left
+nnoremap <C-h> <C-w><C-h>
+" Move to window below
+nnoremap <C-j> <C-w><C-j>
+" Move to window above
+nnoremap <C-k> <C-w><C-k>
+" Move to window right
+nnoremap <C-l> <C-w><C-l>
+
+" Toggle NERDTree
+nnoremap <leader>n :NERDTreeFocus<CR>
+" Close NERDTree
+nnoremap <leader>c :NERDTreeClose<CR>
+" Select in NERDTree
+map <leader>p <Action>(SelectInProjectView)
+
 " New line below insert mode
-inoremap <C-j> <Esc>o
-" Go to last buffer
 map <leader><leader> <Action>(JumpToLastChange)
 " Quick documentation
 map <S-k> <Action>(QuickJavaDoc)
-" StretchSplitToLeft
-map <C-A-S-h> <Action>(StretchSplitToLeft)
-" StretchSplitToRight
-map <C-A-S-l> <Action>(StretchSplitToRight)
-" StretchSplitToBottom
-map <C-A-S-k> <Action>(StretchSplitToBottom)
-" StretchSplitToTop
-map <C-A-S-j> <Action>(StretchSplitToTop)
-" Unfold to level
-map zr <Action>(ExpandToLevel)
 
-" Rename
-nmap <leader>/r <Action>(RenameElement)
-" Usages all
-nmap <leader>* <Action>(FindUsages)
-" Move to window left
-nmap <leader>wh <C-w><C-h>
-" Move to window below
-nmap <leader>wj <C-w><C-j>
-" Move to window above
-nmap <leader>wk <C-w><C-k>
-" Move to window right
-nmap <leader>wl <C-w><C-l>
 " Split window vertically
-nmap <leader>wv <Action>(SplitVertically)
+map <leader><S-\> <Action>(SplitVertically)
 " Split window horizontally
-nmap <leader>ws <Action>(SplitHorizontally)
-" Move to opposite group
-nmap <leader>wx <Action>(MoveEditorToOppositeTabGroup)
-" Close split
-nmap <leader>wq <Action>(Unsplit)
+map <leader>- <Action>(SplitHorizontally)
+
+" Only one. No split
+map <leader>o <Action>(Unsplit)
 " Move line down
-nmap <leader>lj <Action>(MoveLineDown)
+map <leader>lj <Action>(MoveLineDown)
 " Move line up
-nmap <leader>lk <Action>(MoveLineUp)
+map <leader>lk <Action>(MoveLineUp)
 " Move statement down
-nmap <leader>sj <Action>(MoveStatementDown)
+map <leader>sj <Action>(MoveStatementDown)
 " Move statement up
-nmap <leader>sk <Action>(MoveStatementUp)
+map <leader>sk <Action>(MoveStatementUp)
+
+" Create mark at cursor position
+map ma <Action>(ToggleBookmarkA)
+map 'a <Action>(GotoBookmarkA)
+map mb <Action>(ToggleBookmarkB)
+map 'b <Action>(GotoBookmarkB)
+map mc <Action>(ToggleBookmarkC)
+map 'c <Action>(GotoBookmarkC)
+map md <Action>(ToggleBookmarkD)
+map 'd <Action>(GotoBookmarkD)
+map me <Action>(ToggleBookmarkE)
+map 'e <Action>(GotoBookmarkE)
+map mf <Action>(ToggleBookmarkF)
+map 'f <Action>(GotoBookmarkF)
+map mg <Action>(ToggleBookmarkG)
+map 'g <Action>(GotoBookmarkG)
+map mh <Action>(ToggleBookmarkH)
+map 'h <Action>(GotoBookmarkH)
+map mi <Action>(ToggleBookmarkI)
+map 'i <Action>(GotoBookmarkI)
+map mj <Action>(ToggleBookmarkJ)
+map 'j <Action>(GotoBookmarkJ)
+map mk <Action>(ToggleBookmarkK)
+map 'k <Action>(GotoBookmarkK)
+map ml <Action>(ToggleBookmarkL)
+map 'l <Action>(GotoBookmarkL)
+map mm <Action>(ToggleBookmarkM)
+map 'm <Action>(GotoBookmarkM)
+map mn <Action>(ToggleBookmarkN)
+map 'n <Action>(GotoBookmarkN)
+map mo <Action>(ToggleBookmarkO)
+map 'o <Action>(GotoBookmarkO)
+map mp <Action>(ToggleBookmarkP)
+map 'p <Action>(GotoBookmarkP)
+map mq <Action>(ToggleBookmarkQ)
+map 'q <Action>(GotoBookmarkQ)
+map mr <Action>(ToggleBookmarkR)
+map 'r <Action>(GotoBookmarkR)
+map ms <Action>(ToggleBookmarkS)
+map 's <Action>(GotoBookmarkS)
+map mt <Action>(ToggleBookmarkT)
+map 't <Action>(GotoBookmarkT)
+map mu <Action>(ToggleBookmarkU)
+map 'u <Action>(GotoBookmarkU)
+map mv <Action>(ToggleBookmarkV)
+map 'v <Action>(GotoBookmarkV)
+map mw <Action>(ToggleBookmarkW)
+map 'w <Action>(GotoBookmarkW)
+map mx <Action>(ToggleBookmarkX)
+map 'x <Action>(GotoBookmarkX)
+map my <Action>(ToggleBookmarkY)
+map 'y <Action>(GotoBookmarkY)
+map mz <Action>(ToggleBookmarkZ)
+map 'z <Action>(GotoBookmarkZ)
