@@ -4,6 +4,7 @@ set scrolloff=3
 
 set gdefault
 set guicursor
+set highlightedyank
 set ignorecase
 set incsearch
 set number
