@@ -3,6 +3,7 @@
 typeset -A __STASHINGVARS
 __STASHINGVARS[ITALIC_ON]=$'\e[3m'
 __STASHINGVARS[ITALIC_OFF]=$'\e[23m'
+typeset -A __BUHO
 #
 # END GLOBAL
 
@@ -207,8 +208,8 @@ bindkey -M vicmd "^s" history-incremental-pattern-search-forward
 # START SOURCE
 #
 source $HOME/.zsh/aliases
+source $HOME/.zsh/color.zsh
 source $HOME/.zsh/common
-source $HOME/.zsh/colors
 source $HOME/.zsh/exports
 source $HOME/.zsh/functions
 source $HOME/.zsh/path

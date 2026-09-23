@@ -7,3 +7,8 @@
 /.vim/tmp/shada
 /.vim/tmp/viminfo
 /.vim/.netrwhist
+/.config/kitty/colors.conf
+/.config/tmux/colors.conf
+/.config/tmux/theme.conf
+/.zsh/.tinted
+/.zsh/.tinted.previous
