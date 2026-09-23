@@ -105,10 +105,13 @@ color() {
       (
         cd ~/.config/kitty &&
         ln -sf themes/$SCHEME.conf colors.conf 2> /dev/null
-
-        cd ~/.config/tmux &&
-        ln -sf colors/$SCHEME.conf theme.conf 2> /dev/null
       )
+
+      # theme.conf is a real copy (not a symlink into the vendor/tinted-tmux
+      # submodule): some vendored "tinted8" theme files ship with blank
+      # placeholders that we patch below, so we must never write through a
+      # symlink into vendor/.
+      cp ~/.config/tmux/colors/$SCHEME.conf ~/.config/tmux/theme.conf 2> /dev/null
 
       # Kitty appends "-<PID>" to the `listen_on` socket path, so check the
       # env var Kitty exports rather than a fixed socket path.
@@ -118,12 +121,32 @@ color() {
         fi
       fi
 
+      local BORDER=$(__extract color08 "$FILE")
+
+      # "tinted8" (8-color) schemes only define color00-color15, so
+      # color18 (used by full base16 schemes for an extra accent shade)
+      # doesn't exist; fall back to the border color in that case.
+      local CC=$(__extract color18 "$FILE")
+      if [ -z "$CC" ]; then
+        CC=$BORDER
+      fi
+
+      # ponytail: some vendored tinted-tmux "tinted8" theme.conf files ship
+      # with unrendered template placeholders (empty ui.border/ui.accent
+      # hex), producing invalid `fg=#`/`#` tmux styles. Patch those known-
+      # blank spots with $BORDER before tmux ever sources the file. Ceiling:
+      # only guards the specific blank patterns seen so far; if upstream
+      # adds new blank fields this won't catch them.
+      if [ -n "$BORDER" ]; then
+        sed -i '' -E \
+          -e "s/fg=#\"/fg=#${BORDER}\"/g" \
+          -e "s/colour \"#\"/colour \"#${BORDER}\"/g" \
+          ~/.config/tmux/theme.conf
+      fi
+
       if [ -n "$TMUX" ]; then
         command tmux source-file "$HOME/.config/tmux/theme.conf"
       fi
-
-      local CC=$(__extract color18 "$FILE")
-      local BORDER=$(__extract color08 "$FILE")
       if [ -n "$BG" -a -n "$CC" ]; then
         if [ -n "$TMUX" ]; then
           command tmux set -ga window-active-style "bg=#$BG"
