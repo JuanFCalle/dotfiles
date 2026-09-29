@@ -146,6 +146,7 @@ color() {
 
       if [ -n "$TMUX" ]; then
         command tmux source-file "$HOME/.config/tmux/theme.conf"
+        command tmux set-window-option -ga window-status-current-style 'bg=red'
       fi
       if [ -n "$BG" -a -n "$CC" ]; then
         if [ -n "$TMUX" ]; then

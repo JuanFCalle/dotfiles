@@ -3,7 +3,7 @@
 alias cd..='cd ..'
 alias l='ls -F'
 alias ll='ls -laF'
-alias v=vim
+alias v=nvim
 alias t=tmux
 alias e=exit
 alias h=history

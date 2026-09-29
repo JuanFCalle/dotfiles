@@ -227,3 +227,5 @@ eval "$(rbenv init -)"
 
 # Created by `pipx` on 2026-05-08 09:28:16
 export PATH="$PATH:/Users/U793278/.local/bin"
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
