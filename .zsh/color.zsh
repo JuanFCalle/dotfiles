@@ -63,7 +63,7 @@ color() {
   __extract() {
     local COLOR=$1
     local FILE=$2
-    local HEX=$(grep "${COLOR}=" "$FILE")
+    local HEX=$(grep "^${COLOR}=" "$FILE")
 
     # Remove up to and including first ".
     HEX=${HEX#*\"}
@@ -83,6 +83,36 @@ color() {
     # A few schemes exist in tinted-shell but not in tinted-terminal/tinted-tmux.
     if [[ -e "$FILE" && -e ~/.config/kitty/themes/$SCHEME.conf && -e ~/.config/tmux/colors/$SCHEME.conf ]]; then
       local BG=$(__extract color_background "$FILE")
+      local FG=$(__extract color_foreground "$FILE")
+      local BORDER=$(__extract color08 "$FILE")
+      local ACCENT=$(__extract color03 "$FILE")
+      local CC=$(__extract color18 "$FILE")
+      local MESSAGE_BG=$(__extract color19 "$FILE")
+      local LABEL_FG=$(__extract color20 "$FILE")
+      local MESSAGE_FG=$(__extract color21 "$FILE")
+      local VALUE
+      for VALUE in "$BG" "$FG" "$BORDER" "$ACCENT"; do
+        if ! [[ "$VALUE" =~ '^[[:xdigit:]]{6}$' ]]; then
+          print -u2 -- "color: invalid palette value '$VALUE' in $FILE"
+          return 1
+        fi
+      done
+
+      local FULL_PALETTE=1
+      if [[ -z "$CC$MESSAGE_BG$LABEL_FG$MESSAGE_FG" ]] && grep -q '^export TINTED8_THEME=' "$FILE"; then
+        # ponytail: tinted8 has no extended shades; retain its vendor styles.
+        # Exact Wincent palette roles require a full Base16/Base24 scheme.
+        FULL_PALETTE=0
+        CC=$BORDER
+      else
+        for VALUE in "$CC" "$MESSAGE_BG" "$LABEL_FG" "$MESSAGE_FG"; do
+          if ! [[ "$VALUE" =~ '^[[:xdigit:]]{6}$' ]]; then
+            print -u2 -- "color: incomplete or invalid extended palette in $FILE"
+            return 1
+          fi
+        done
+      fi
+
       local LUMA=$(luma "$BG")
       local LIGHT=$((LUMA > 127.5))
       local BACKGROUND=dark
@@ -90,82 +120,100 @@ color() {
         BACKGROUND=light
       fi
 
-      if [ -e "$__BUHO[TINTED_CONFIG]" ]; then
-        cp "$__BUHO[TINTED_CONFIG]" "$TINTED_CONFIG_PREVIOUS"
-      fi
+      local STAGE
+      STAGE=$(mktemp -d "$HOME/.config/tmux/.color.XXXXXXXX") || return 1
+      {
+        # Stage a copy, never patch through a symlink into vendor/.
+        cp ~/.config/tmux/colors/$SCHEME.conf "$STAGE/theme.conf" || return 1
 
-      echo "$SCHEME" >! "$__BUHO[TINTED_CONFIG]"
-      echo "$BACKGROUND" >> "$__BUHO[TINTED_CONFIG]"
-      sh "$FILE"
-
-      # When running a `.tmux` script we may have a race where multiple `ln -sf`
-      # are running at the same time (because the script may open multiple
-      # splits), producing "ln: colors.conf: File exists" or similar; so,
-      # swallow stderr.
-      (
-        cd ~/.config/kitty &&
-        ln -sf themes/$SCHEME.conf colors.conf 2> /dev/null
-      )
-
-      # theme.conf is a real copy (not a symlink into the vendor/tinted-tmux
-      # submodule): some vendored "tinted8" theme files ship with blank
-      # placeholders that we patch below, so we must never write through a
-      # symlink into vendor/.
-      cp ~/.config/tmux/colors/$SCHEME.conf ~/.config/tmux/theme.conf 2> /dev/null
-
-      # Kitty appends "-<PID>" to the `listen_on` socket path, so check the
-      # env var Kitty exports rather than a fixed socket path.
-      if [[ -n "$KITTY_WINDOW_ID" && -n "$KITTY_LISTEN_ON" ]]; then
-        if command -v kitten &> /dev/null; then
-          kitten @ set-colors --all --configured ~/.config/kitty/colors.conf
-        fi
-      fi
-
-      local BORDER=$(__extract color08 "$FILE")
-
-      # "tinted8" (8-color) schemes only define color00-color15, so
-      # color18 (used by full base16 schemes for an extra accent shade)
-      # doesn't exist; fall back to the border color in that case.
-      local CC=$(__extract color18 "$FILE")
-      if [ -z "$CC" ]; then
-        CC=$BORDER
-      fi
-
-      # ponytail: some vendored tinted-tmux "tinted8" theme.conf files ship
-      # with unrendered template placeholders (empty ui.border/ui.accent
-      # hex), producing invalid `fg=#`/`#` tmux styles. Patch those known-
-      # blank spots with $BORDER before tmux ever sources the file. Ceiling:
-      # only guards the specific blank patterns seen so far; if upstream
-      # adds new blank fields this won't catch them.
-      if [ -n "$BORDER" ]; then
+        # ponytail: repair only the known blank tinted8 border/accent fields.
+        # New upstream placeholders will need an explicit additional mapping.
         sed -i '' -E \
           -e "s/fg=#\"/fg=#${BORDER}\"/g" \
           -e "s/colour \"#\"/colour \"#${BORDER}\"/g" \
-          ~/.config/tmux/theme.conf
-      fi
+          "$STAGE/theme.conf" || return 1
 
-      if [ -n "$TMUX" ]; then
-        command tmux source-file "$HOME/.config/tmux/theme.conf"
-        command tmux set-window-option -ga window-status-current-style 'bg=red'
-      fi
-      if [ -n "$BG" -a -n "$CC" ]; then
-        if [ -n "$TMUX" ]; then
-          command tmux set -ga window-active-style "bg=#$BG"
-          command tmux set -ga window-style "bg=#$CC"
-          command tmux set -g pane-active-border-style "bg=#$CC,fg=#$BORDER"
-          command tmux set -g pane-border-style "bg=#$CC,fg=#$BORDER"
+        cat > "$STAGE/colors.conf" <<EOF || return 1
+set -g window-active-style "bg=#$BG"
+set -g window-style "bg=#$CC"
+set -g pane-active-border-style "fg=#$BORDER,bg=#$CC"
+set -g pane-border-style "fg=#$BORDER,bg=#$CC"
+EOF
+        if (( FULL_PALETTE )); then
+          # Wincent uses the extended shades for UI surfaces, not the pane BG.
+          cat >> "$STAGE/colors.conf" <<EOF || return 1
+set -g status-style "fg=#$LABEL_FG,bg=#$CC"
+set -g window-status-style "fg=#$LABEL_FG,bg=#$CC"
+set -g window-status-current-style "fg=#$ACCENT,bg=#$CC"
+set -g window-status-activity-style "fg=#$FG,bg=#$CC"
+set -g message-style "fg=#$MESSAGE_FG,bg=#$MESSAGE_BG"
+set -g message-command-style "fg=#$MESSAGE_FG,bg=#$MESSAGE_BG"
+set -g mode-style "fg=#$LABEL_FG,bg=#$MESSAGE_BG"
+EOF
         fi
 
-        cat <<EOF > ~/.config/tmux/colors.conf
-set -ga window-active-style "bg=#$BG"
-set -ga window-style "bg=#$CC"
-set -g pane-active-border-style "bg=#$CC"
-set -g pane-border-style "bg=#$CC"
-EOF
-      fi
+        if [ -e "$__BUHO[TINTED_CONFIG]" ]; then
+          cp "$__BUHO[TINTED_CONFIG]" "$TINTED_CONFIG_PREVIOUS" || return 1
+        fi
+        mv -f "$STAGE/theme.conf" ~/.config/tmux/theme.conf || return 1
+        mv -f "$STAGE/colors.conf" ~/.config/tmux/colors.conf || return 1
+        ln -sf "themes/$SCHEME.conf" ~/.config/kitty/colors.conf || return 1
+        printf '%s\n%s\n' "$SCHEME" "$BACKGROUND" >! "$__BUHO[TINTED_CONFIG]" || return 1
+        sh "$FILE" || return 1
+
+        local KITTY_ADDRESS=$KITTY_LISTEN_ON KITTY_ID=$KITTY_WINDOW_ID
+        local KITTY_ERROR= APPLY_STATUS=0
+        if [[ -n "$TMUX" ]]; then
+          # ponytail: one Kitty client per session; shared clients need explicit routing.
+          local SESSION SESSION_ENV ENTRY KITTY_METADATA=0
+          KITTY_ADDRESS=
+          KITTY_ID=
+          if SESSION=$(command tmux display-message -p -t "${TMUX_PANE:-}" '#{session_id}') &&
+              SESSION_ENV=$(command tmux show-environment -t "$SESSION"); then
+            for ENTRY in "${(@f)SESSION_ENV}"; do
+              case "$ENTRY" in
+                KITTY_LISTEN_ON=*) KITTY_ADDRESS=${ENTRY#*=}; KITTY_METADATA=1 ;;
+                KITTY_WINDOW_ID=*) KITTY_ID=${ENTRY#*=}; KITTY_METADATA=1 ;;
+                -KITTY_LISTEN_ON|-KITTY_WINDOW_ID) KITTY_METADATA=1 ;;
+              esac
+            done
+            if (( ! KITTY_METADATA )) && [[ -n "$KITTY_LISTEN_ON$KITTY_WINDOW_ID" ]]; then
+              KITTY_ERROR="Kitty metadata has not been refreshed in this tmux session"
+            fi
+          else
+            KITTY_ERROR="cannot read the current tmux session's Kitty environment"
+          fi
+        fi
+
+        if [[ -z "$KITTY_ERROR" && -n "$KITTY_ADDRESS$KITTY_ID" ]]; then
+          if [[ -z "$KITTY_ADDRESS" || -z "$KITTY_ID" ]]; then
+            KITTY_ERROR="incomplete Kitty connection metadata"
+          elif [[ "$KITTY_ADDRESS" == unix:/* && ! -S "${KITTY_ADDRESS#unix:}" ]]; then
+            KITTY_ERROR="Kitty socket does not exist: $KITTY_ADDRESS"
+          elif ! command kitten @ --to "$KITTY_ADDRESS" set-colors --all --configured ~/.config/kitty/colors.conf; then
+            KITTY_ERROR="Kitty remote-control command failed"
+          fi
+        fi
+        if [[ -n "$KITTY_ERROR" ]]; then
+          print -u2 -- "color: $KITTY_ERROR; theme saved, but Kitty was not updated."
+          print -u2 -- "color: check Kitty's listener; in tmux, reload tmux.conf and reattach from a current Kitty shell."
+          APPLY_STATUS=1
+        fi
+
+        if [ -n "$TMUX" ]; then
+          command tmux set-environment -g TINTED_TMUX_OPTION_STATUSBAR 0 \; \
+            set-environment -g BASE16_TMUX_OPTION_STATUSBAR 0 \; \
+            source-file "$HOME/.config/tmux/theme.conf" \; \
+            source-file "$HOME/.config/tmux/colors.conf" || APPLY_STATUS=1
+        fi
+        return "$APPLY_STATUS"
+      } always {
+        rm -f -- "$STAGE/theme.conf" "$STAGE/colors.conf"
+        rmdir -- "$STAGE"
+      }
     else
-      echo "Scheme '$SCHEME' not found (need $SHELL_COLORS_DIR/$SCHEME.sh plus Kitty and tmux themes)"
-      STATUS=1
+      print -u2 -- "Scheme '$SCHEME' not found (need $SHELL_COLORS_DIR/$SCHEME.sh plus Kitty and tmux themes)"
+      return 1
     fi
   }
 
@@ -175,7 +223,7 @@ EOF
     if [ -s "$__BUHO[TINTED_CONFIG]" ]; then
       cat "$__BUHO[TINTED_CONFIG]"
       SCHEME=$(head -1 "$__BUHO[TINTED_CONFIG]")
-      __color "$SCHEME"
+      __color "$SCHEME" || STATUS=$?
       unfunction __color __extract
       return $STATUS
     else
@@ -195,7 +243,7 @@ EOF
   case "$SCHEME" in
   help)
     echo 'color                                                     (show current scheme)'
-    echo 'color base16-default-dark|base16-solarized-light|...     (switch to scheme)'
+    echo 'color base16-bright|base16-solarized-light|...           (switch to scheme)'
     echo 'color help                                                (show this help)'
     echo 'color ls [pattern]                                        (list available schemes)'
     echo 'color rand [-q/--quiet] [pattern]                         (choose a random scheme)'
@@ -210,19 +258,19 @@ EOF
     if [[ ${#QUIET} -eq 0 ]]; then
       echo "$RANDOM_COLOR"
     fi
-    __color "$RANDOM_COLOR"
+    __color "$RANDOM_COLOR" || STATUS=$?
     ;;
   -)
     if [[ -s "$TINTED_CONFIG_PREVIOUS" ]]; then
       local PREVIOUS_SCHEME=$(head -1 "$TINTED_CONFIG_PREVIOUS")
-      __color "$PREVIOUS_SCHEME"
+      __color "$PREVIOUS_SCHEME" || STATUS=$?
     else
       echo "warning: no previous config found at $TINTED_CONFIG_PREVIOUS"
       STATUS=1
     fi
     ;;
   *)
-    __color "$SCHEME"
+    __color "$SCHEME" || STATUS=$?
     ;;
   esac
 
@@ -244,7 +292,7 @@ function () {
       color "$SCHEME"
     else
       # Default.
-      color base16-default-dark
+      color base16-bright
     fi
   fi
 }

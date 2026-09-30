@@ -19,3 +19,15 @@
 	path = vendor/tinted-tmux
 	url = https://github.com/tinted-theming/tinted-tmux.git
 	shallow = true
+[submodule "nvim/.config/nvim/pack/bundle/opt/base16-nvim"]
+	path = nvim/.config/nvim/pack/bundle/opt/base16-nvim
+	url = https://github.com/wincent/base16-nvim.git
+[submodule "nvim/.config/nvim/pack/bundle/opt/pinnacle"]
+	path = nvim/.config/nvim/pack/bundle/opt/pinnacle
+	url = https://github.com/wincent/pinnacle.git
+[submodule "nvim/.config/nvim/pack/bundle/opt/indent-blankline.nvim"]
+	path = nvim/.config/nvim/pack/bundle/opt/indent-blankline.nvim
+	url = https://github.com/lukas-reineke/indent-blankline.nvim.git
+[submodule "nvim/.config/nvim/pack/bundle/opt/nvim-treesitter"]
+	path = nvim/.config/nvim/pack/bundle/opt/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter.git

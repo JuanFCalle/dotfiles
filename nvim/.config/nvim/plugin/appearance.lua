@@ -1,0 +1,1 @@
+require('buho.appearance').setup()
