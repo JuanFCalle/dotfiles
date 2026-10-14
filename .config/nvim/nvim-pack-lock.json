@@ -1,8 +1,16 @@
 {
   "plugins": {
+    "loupe": {
+      "rev": "100a80de4ece5d2e8cae4a9bf8881c8e31e18e6f",
+      "src": "https://github.com/wincent/loupe"
+    },
     "mini.nvim": {
       "rev": "9ee72c26ac1440ee6c95ce708c1d739684be316a",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "pinnacle": {
+      "rev": "6849357c9cf1138894e26d87b6721946fb193406",
+      "src": "https://github.com/wincent/pinnacle"
     }
   }
 }

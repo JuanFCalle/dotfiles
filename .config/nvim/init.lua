@@ -189,7 +189,33 @@ do
 end
 
 -- ============================================================
--- SECTION 5: OPTIONAL EXAMPLES / NEXT STEPS
+-- SECTION 5: SEARCH & HIGHLIGHTS
+-- wincent/loupe and wincent/pinnacle
+-- ============================================================
+do
+  -- [[ loupe ]]
+  --  Improves the default search behaviour: highlights the current match,
+  --  centers results, and uses "very magic" patterns by default.
+  --  Configured entirely via `g:Loupe*` globals, so they must be set
+  --  *before* `vim.pack.add()` sources `plugin/loupe.vim`.
+  --
+  --  See `:help loupe`
+
+  -- Keep <C-l> as "focus the right window" (see Section 2); <Esc> already
+  -- clears the search highlight.
+  vim.g.LoupeClearHighlightMap = 0
+
+  -- [[ pinnacle ]]
+  --  A library for inspecting and deriving highlight groups. It has no
+  --  configuration of its own; it exists to be called from other code
+  --  (e.g. a statusline) via `require('wincent.pinnacle')`.
+  --
+  --  See `:help pinnacle`
+  vim.pack.add { gh 'wincent/pinnacle', gh 'wincent/loupe' }
+end
+
+-- ============================================================
+-- SECTION 6: OPTIONAL EXAMPLES / NEXT STEPS
 -- kickstart.plugins.* examples
 -- ============================================================
 do
