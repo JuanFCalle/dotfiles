@@ -215,7 +215,29 @@ do
 end
 
 -- ============================================================
--- SECTION 6: OPTIONAL EXAMPLES / NEXT STEPS
+-- SECTION 6: SHARED THEMING
+-- tinted-theming/tinted-vim, driven by `color()` in ~/.zsh/color.zsh
+-- ============================================================
+do
+  -- [[ tinted-vim ]]
+  --  Zsh owns theme selection; Neovim reads it. `color()` applies the scheme
+  --  to the shell, Kitty and tmux, then records the slug and background in
+  --  ~/.zsh/.tinted, which `after/plugin/color.lua` reads on VimEnter and
+  --  FocusGained.
+  --
+  --  tinted-vim's colorscheme names match those slugs exactly, so no mapping
+  --  layer is needed. The repo also vendors tinted-vim as a submodule under
+  --  .vim/ for plain Vim, but that directory is not symlinked into $HOME, so
+  --  Neovim gets its own `vim.pack`-pinned copy like every other plugin here.
+  vim.pack.add { gh 'tinted-theming/tinted-vim' }
+
+  --  Deliberately *not* setting `g:tinted_shell_path`: it makes every
+  --  `:colorscheme` shell out to the tinted-shell script that `color()` has
+  --  already run.
+end
+
+-- ============================================================
+-- SECTION 7: OPTIONAL EXAMPLES / NEXT STEPS
 -- kickstart.plugins.* examples
 -- ============================================================
 do
